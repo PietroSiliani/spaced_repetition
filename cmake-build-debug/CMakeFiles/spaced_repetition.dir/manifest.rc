@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "C:/Users/pietr/Varie/Annalisa/Progetti/C++/spaced_repetition/cmake-build-debug/CMakeFiles/spaced_repetition.dir/embed.manifest"

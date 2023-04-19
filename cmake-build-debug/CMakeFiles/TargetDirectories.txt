@@ -1,0 +1,3 @@
+C:/Users/pietr/Varie/Annalisa/Progetti/C++/spaced_repetition/cmake-build-debug/CMakeFiles/spaced_repetition.dir
+C:/Users/pietr/Varie/Annalisa/Progetti/C++/spaced_repetition/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/pietr/Varie/Annalisa/Progetti/C++/spaced_repetition/cmake-build-debug/CMakeFiles/rebuild_cache.dir

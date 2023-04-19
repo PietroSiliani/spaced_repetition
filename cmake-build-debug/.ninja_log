@@ -1,0 +1,5 @@
+# ninja log v5
+0	683	7035915672378992	CMakeFiles/spaced_repetition.dir/main.cpp.obj	3e7545c9c9f40496
+685	953	7035915674532670	spaced_repetition.exe	28a63f69f0deecd9
+3	134	7035954866511156	build.ninja	56fb5e5efda889f2
+10	536	7035907876139421	CMakeFiles/spaced_repetition.dir/Subject.cpp.obj	20332abe3973cde4
