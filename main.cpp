@@ -197,7 +197,7 @@ int main() {
                 add_subject(&names);
                 break;
             case MANAGE:
-                if (names.size() > 0) {
+                if (!names.empty()) {
                     manage_subject(&names);
                 } else {
                     std::cout << "Non ci sono argomenti da gestire" << std::endl;
