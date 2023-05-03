@@ -25,10 +25,10 @@ int read_int() {
     return input;
 }
 
-void print_stringvec(const std::vector<Subject> &v) {
+void print_subjects(const std::vector<Subject> &v) {
     int i = 0;
     for (const auto& value : v) {
-        std::cout <<"[" << i << "] " << value.getName() << std::endl;
+        std::cout <<"[" << i << "] " << value.asString() << std::endl;
         i++;
     }
 }
@@ -64,7 +64,7 @@ void add_subject(std::vector<Subject>* v) {
     std::cout << "\nInserisco \"" << name << "\" nella lista degli argomenti...\n" << std::endl;
     v->emplace_back(Subject(name));
     std::cout << "Ecco la nuova lista degli argomenti:" << std::endl;
-    print_stringvec(*v);
+    print_subjects(*v);
 
 };
 
@@ -97,7 +97,7 @@ void manage_subject(std::vector<Subject>* v) {
     int idx;
     bool valid = false;
     std::cout << "Quale argomento vuoi gestire? (inserisci il numero corrispondente" << std::endl;
-    print_stringvec(*v);
+    print_subjects(*v);
     do {
         idx = read_int();
 
@@ -129,13 +129,13 @@ void manage_subject(std::vector<Subject>* v) {
         case 0:
             remove_subject(v, idx);
             std::cout << "Nuova lista degli argomenti:" << std::endl;
-            print_stringvec(*v);
+            print_subjects(*v);
 
             break;
         case 1:
             change_subject_name(v, idx);
             std::cout << "Nuova lista degli argomenti:" << std::endl;
-            print_stringvec(*v);
+            print_subjects(*v);
         default:
             break;
 
@@ -182,12 +182,12 @@ Action get_action() {
 
 int main() {
     std::vector<Subject> names = std::vector<Subject>();
-    std::string in = "Ciao Anna";
+    /*std::string in = "Ciao Anna";
     names.emplace_back(Subject(in));
     in = "Ciao Pietro";
-    names.emplace_back(Subject(in));
+    names.emplace_back(Subject(in));*/
 
-    print_stringvec(names);
+    print_subjects(names);
     bool quit = false;
 
     while(!quit) {
@@ -210,19 +210,6 @@ int main() {
                 break;
         }
     }
-
-
-
-    /*int position = 1;
-    const auto iter = names.begin() + position;
-    std::string removed = names[position];
-    names.erase(iter);
-
-
-
-    for (const auto & name : names) {
-        std::cout << name << std::endl;
-    }*/
 
 
     //std::cout << "Hello, World!" << std::endl;

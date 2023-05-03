@@ -9,6 +9,7 @@ Subject::Subject(string &n, const vector<int> &spacing) {
     initRepetitionDates(spacing);
 }
 
+
 system_clock::time_point Subject::getCurrentDate() {
     return std::chrono::system_clock::now();
 }
@@ -26,47 +27,77 @@ void Subject::setName(const string &name) {
 }
 
 void Subject::initRepetitionDates(const vector<int> &spacing) {
-    //TODO: idea: fill a list with DateNodes, each DateNode points to next date
-    //Motivation: list allows for easy iteration over each node through iterators
-    //DateNode allows for easy access to nextDate without having to save pointers to iterators
-    //(and thus without the need to modify nextDate in case of insertion/removal of a node)
+    /*
+     * Receives a vector of "spacings" between the dates
+     * initializes the vector of repetition dates based on the spacing
+     * values in the "spacing" vector represent the offset in days between the FIRST repetition
+     * and the date of the repetition that is being inserted at that index
+     */
 
-    repetitionDates = list<DateNode>();
+    repetitionDates = vector<rep_date>();
     const auto current = getCurrentDate();
 
     //fill list
-    for (const auto &days: spacing) {
-        repetitionDates.emplace_back((current + hours(days*24)));
+
+    using namespace date::literals;
+
+    /*constexpr date::sys_days tp = 1900_y/01/01;  // Compile-time date literal
+    // Just add and print out
+    using date::operator<<;
+    std::cout << tp + days << '\n';  // 1902-09-28*/
+
+   /*std::cout <<  "inserting dates: " << std::endl;*/
+    for (const auto &d: spacing) {
+        date::days days{d};
+        /*std::cout <<  "current: " << date::format("%D", current) << std::endl;
+        std::cout <<  "current + spacing: " << date::format("%D", current + days) << std::endl;*/
+        repetitionDates.push_back(getCurrentDate() + days);
     }
 
-    //set next pointers
-    for (auto currentItr = repetitionDates.begin(); currentItr != repetitionDates.end(); currentItr++) {
-        auto nextItr = next(currentItr, 1);
-        if (nextItr != repetitionDates.end()) {
-            currentItr->resetNext(&(*nextItr)); //pass address of DateNote "pointed" by nextItr
-        }
-    }
+    nextDateIdx = 0; //init next date index to first date
 }
 
-bool Subject::insertRepetitionDate(system_clock::time_point newDate) {
+bool Subject::insertRepetitionDate(rep_date newDate) {
     //Ordered insert based on date value
-    //TODO: should it return result or not? Could insertion fail in some way? (check on validity of the date should be made somewhere else)
 
     bool inserted = false;
     auto currentItr = repetitionDates.begin();
     while(!inserted && currentItr != repetitionDates.end()) {
-        auto currentDate = currentItr->getDate();
+        auto currentDate = *currentItr;
         if (currentDate < newDate) {
-            auto newNext = currentItr->getNext(); //read next of current DateNode
-            DateNode newNode = DateNode(newDate, newNext.get()); //create new DateNode and set its next ptr to newNext
-            currentItr->resetNext(&newNode); //change next ptr of currently pointed DateNode
-            repetitionDates.insert(currentItr, newNode);
-
+            repetitionDates.insert(currentItr, newDate);
             inserted = true;
+
         } else {
             currentItr++;
         }
+
     }
+
+    if (!inserted) {
+        repetitionDates.push_back(newDate);
+    }
+
     return inserted;
 }
 
+rep_date Subject::removeRepetitionDate(int idx) {
+    //TODO: throws out_of_range exception
+    auto targetItr = repetitionDates.begin() + idx;
+    rep_date removed = repetitionDates[idx];
+    repetitionDates.erase(repetitionDates.begin() + idx);
+    return removed;
+}
+using namespace date;
+
+string Subject::asString() const {
+    stringstream output;
+    output << name;
+
+    for (const auto &repDate: repetitionDates) {
+        output << " -> ";
+        output << date::format("%d/%m/%y", repDate);
+    }
+
+    return output.str();
+}
